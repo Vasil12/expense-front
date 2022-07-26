@@ -71,7 +71,7 @@ const deleteExpense = async (id) => {
     const fetchedData = await fetchWithoutBody('DELETE',id)
     const response = await fetchedData.json();
   
-    if (response) {
+    if (response && response.length > 0) {
       response.forEach((element) => {
         const listElement = render(element);
         container.append(listElement);
