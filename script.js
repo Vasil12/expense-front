@@ -1,6 +1,5 @@
 const api_base = 'http://localhost:3000';
 const container = document.querySelector('.expenses-container');
-let totalAmount = 0;
 
 const headers = {
   Accept: 'application/json',
@@ -34,6 +33,7 @@ const fetchAPI = async () => {
 
 const render = (data) => {
   const { id, shop, cost, createdAt } = data;
+  let totalAmount = 0;
   totalAmount += Number(cost);
   document.getElementById('total-amount').innerText =totalAmount;
   const list = document.createElement('div');
@@ -42,9 +42,8 @@ const render = (data) => {
   <p class="shop"> Shop '${shop}'</p>
   <p class="date">${createdAt}</p>
   <p class="amount">$ ${cost}</p>
-  <img src="https://img.icons8.com/ios-glyphs/30/000000/edit--v1.png" alt="" class="edit">
-  <img src="https://img.icons8.com/ios-glyphs/30/000000/filled-trash.png" alt="" class="delete">
-  `;
+  <img src="https://img.icons8.com/ios-glyphs/30/000000/edit--v1.png" alt="edit" class="edit">
+  <img src="https://img.icons8.com/ios-glyphs/30/000000/filled-trash.png" alt="delete" class="delete">`;
 
   list.querySelector('.delete').addEventListener('click', () => deleteExpense(id))
 
@@ -64,7 +63,6 @@ window.onload = () => {
   fetchAPI();
 }
 
-// DELETE METHOD
 const deleteExpense = async (id) => {
     try {
     container.innerHTML = '';
@@ -82,4 +80,4 @@ const deleteExpense = async (id) => {
     return errorValue.innerHTML = error;
    }
    
-  };
+};
