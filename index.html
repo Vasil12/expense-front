@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Document</title>
+</head>
+<body>
+    <div>
+        <section id="content">
+            <div id="header">
+                <h1>Record track of my expenses</h1>
+                <h3 id="error-message"></h3>
+                <h3 id="success-message"></h3>
+            </div>
+            <div id="input-field">
+                <div id="shop">
+                    <p>Where it was spent:</p>
+                    <input type="text" id="shop-input">
+                </div>
+                <div id="amount">
+                    <p>How much was spent:</p>
+                    <input type="number" min="0" id="amount-input">
+                </div>
+                <div id="btn">
+                    <button id="add">Add</button>
+                </div>
+            </div>
+            <div id="total">
+                <p>Total: $ <span id="total-amount"></span></p>
+            </div>
+            <div class="expenses-container">
+            </div>
+        </section>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>

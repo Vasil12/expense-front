@@ -1,0 +1,125 @@
+:root {
+    --bg-color: #657580;
+}
+
+*, *::after, *::before {
+    box-sizing: border-box;
+}
+
+body {
+    font-family:  sans-serif;
+    background-color: var(--bg-color);
+}
+
+#content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    margin-top: 10%;
+}
+
+#header {
+    font-size: 25px;
+}
+
+#input-field {
+    display: flex;
+    flex-direction: row;
+    margin-top: 5px;
+}
+
+p {
+    font-size: 15px;
+    font-weight: 300;
+}
+
+#shop-input {
+    margin-top: -2px;
+    margin-right: 15px;
+    padding: 12px;
+    width: 300px;
+    border: 1px solid white;
+    border-radius: 8px;
+} 
+
+#amount-input {
+    margin-top: -2px;
+    margin-right: 15px;
+    padding: 12px;
+    width: 160px;
+    border: 1px solid white;
+    border-radius: 8px;
+}
+
+#add {
+    font-size: 16px;
+    font-weight: 300;
+    padding: 12px;
+    width: 100px;
+    margin-left: 10px;
+    margin-top: 45px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    background-color: #4b8569;
+    transition: 0.5s;
+}
+
+#add:hover {
+    background-color: rgba(75,133,105,0.7)
+}
+
+#total {
+    margin-left: 25%;
+}
+#total > p {
+    font-size: 25px;
+}
+
+.list {
+    margin-top: 15px;
+    display: flex;
+    flex-direction: row;
+}
+
+.list p {
+    font-size: 24px;
+}
+
+.shop {
+    margin-right: 50px;
+}
+.date {
+    margin-right: 20px;
+}
+.amount {
+    margin-right: 50px;
+}
+
+.list > img {
+    margin-top: 18px;
+    margin-right: 10px;
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+}
+
+.hidden {
+    display: none;
+}
+
+#error-message {
+    font-weight: 300;
+    color: #900d09;
+    display: none;
+    text-align: center;
+}
+
+#success-message {
+    color: #ea466f;
+    font-weight: 400;
+    text-align:center;
+    display: none;
+}
+
