@@ -1,6 +1,6 @@
 const api_base = 'http://localhost:3000';
 const container = document.querySelector('.expenses-container');
-let totalAmount = 0;
+
 
 const headers = {
   Accept: 'application/json',
@@ -34,6 +34,7 @@ const fetchAPI = async () => {
 
 const render = (data) => {
   const { id, shop, cost, createdAt } = data;
+  let totalAmount = 0;
   totalAmount += Number(cost);
   document.getElementById('total-amount').innerText =totalAmount;
   const list = document.createElement('div');
