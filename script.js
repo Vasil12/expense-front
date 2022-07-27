@@ -1,5 +1,6 @@
 const api_base = 'http://localhost:3000';
 const container = document.querySelector('.expenses-container');
+let totalAmount = 0;
 
 
 const headers = {
@@ -22,7 +23,9 @@ const fetchWithoutBody = async (method, id) => {
       headers,
   });
 };
+
 //GET METHOD
+
 const fetchAPI = async () => {
   const url = await fetchWithoutBody("GET");
   const res = await url.json();
@@ -34,9 +37,6 @@ const fetchAPI = async () => {
 
 const render = (data) => {
   const { id, shop, cost, createdAt } = data;
-  let totalAmount = 0;
-  totalAmount += Number(cost);
-  document.getElementById('total-amount').innerText =totalAmount;
   const list = document.createElement('div');
   list.setAttribute('class', 'list');
   list.innerHTML = `
@@ -49,18 +49,42 @@ const render = (data) => {
 
   list.querySelector('.delete').addEventListener('click', () => deleteExpense(id))
 
-  const editBtn = list.querySelector('.edit');
-  editBtn.addEventListener('click', () => {
+const editBtn = list.querySelector('.edit');
+    editBtn.addEventListener('click', () => {
     const shopField = list.querySelector('.shop')
     const shop = shopField.innerText.substr(6).slice(0,-1);
     const costField = list.querySelector('.amount')
     const cost = costField.innerText.substring(2);
     updateValues = { id, shop, cost, shopField, costField, editBtn };
     updateInstanceById(updateValues);
-  })
+});
+
+  totalAmount += Number(cost);
+  document.getElementById('total-amount').innerText = totalAmount;
   return list;
 };
 
 window.onload = () => {
   fetchAPI();
 }
+
+// DELETE METHOD
+
+const deleteExpense = async (id) => {
+  try {
+  const fetchedData = await fetchWithoutBody('DELETE',id)
+  const response = await fetchedData.json();
+
+  if (response.length) {
+    totalAmount = 0;
+    container.innerHTML = "";
+    response.forEach((element) => {
+    const listElement = render(element);
+    container.append(listElement);
+    });
+  }
+ }
+ catch(error) {
+  return errorValue.innerHTML = error;
+ }
+};
