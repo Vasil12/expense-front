@@ -1,6 +1,7 @@
 const api_base = 'http://localhost:3000';
 const container = document.querySelector('.expenses-container');
 let totalAmount = 0;
+const arr = [];
 
 
 const headers = {
@@ -32,6 +33,7 @@ const fetchAPI = async () => {
   res.forEach((element) => {
     const listEl = render(element);
     container.append(listEl);
+    arr.push(element);
   });
 }
 
@@ -107,8 +109,8 @@ const addExpense = async () => {
         return errorValue.innerHTML = 'Cost should be a positive number';
       }
 const fetchResponse = await fetchBody('POST', {
-         shop: shopValue,
-          cost: costValue,
+        shop: shopValue,
+        cost: costValue,
       });
   
 const res = await fetchResponse.json();
@@ -136,6 +138,7 @@ addBtn.addEventListener('click', addExpense);
 // PATCH METHOD
 
 const updateInstanceById = async (updateValues) => {
+    console.log("updateValues", updateValues);
     const { id, shop, cost, shopField, costField, editBtn } = updateValues
     const errorValue = document.getElementById('error-message');
     const successValue = document.getElementById('success-message');
@@ -163,50 +166,45 @@ const updateInstanceById = async (updateValues) => {
       editedCostValue = target.value;
     });
 
-const update = async () => {
-    try {
-      if (!editedShopValue && !editedCostValue) {
-        errorValue.style.display = 'block';
-        return errorValue.innerHTML = 'You must change at least one input should be changed';
-      } 
-      if(editedCostValue < 0 || isNaN(editedCostValue)) {
-        errorValue.style.display = 'block';
-        return errorValue.innerHTML = 'Cost must be a positive number.';
-      }
-      if (editedShopValue !== shop) {
-        valuesToUpdate.shop = editedShopValue;
-      }
-      if (editedCostValue !== cost) {
-        valuesToUpdate.cost = editedCostValue;
-      }
-      if (Object.keys(valuesToUpdate).length === 0) {
-        errorValue.style.display = 'block';
-        return errorValue.innerHTML = 'Invalid input, nothing  changed';
-      }
-      if (Object.keys(valuesToUpdate).length === 1) {
-        if (valuesToUpdate.shop === "" || valuesToUpdate.cost === "") {
-        errorValue.style.display = 'block';
-        return errorValue.innerHTML = 'Invalid input,nothing  changed';
+    const update = async () => {
+        if (!editedShopValue && !editedCostValue) {
+            errorValue.style.display = 'block';
+            return errorValue.innerHTML = 'You must change at least one input should be changed';
+          } 
+          if(editedCostValue < 0 || isNaN(editedCostValue)) {
+            errorValue.style.display = 'block';
+            return errorValue.innerHTML = 'Cost must be a positive number.';
+          }
+          if (editedShopValue !== shop) {
+            valuesToUpdate.shop = editedShopValue;
+          }
+          if (editedCostValue !== cost) {
+            valuesToUpdate.cost = editedCostValue;
+          }
+  
+        if (!Object.keys(valuesToUpdate).length) {
+            totalAmount = 0;
+            container.innerHTML = '';
+            arr.forEach(element => {
+                const listElement = render(element);
+                container.append(listElement);
+            });    
         }
-      }
-      container.innerHTML = '';    
-      const fetchedData = await fetchBody('PATCH', valuesToUpdate ,id);
-      const res = await fetchedData.json();
-      if (res.length) {
-        totalAmount = 0;
-        res.forEach((element) => {
-          const listElement = render(element);
-          container.append(listElement);
-          errorValue.style.display = 'none';
-          successValue.style.display = 'block';
-          successValue.innerText = 'Your expense has changed.';
-        });
-      }
-     }
-     catch(error) {
-      errorValue.style.display = 'block';
-      return errorValue.innerHTML = error;
-     }
+       else {
+           container.innerHTML = '';    
+            const fetchedData = await fetchBody('PATCH', valuesToUpdate ,id);
+            const res = await fetchedData.json();
+            if (res.length) {
+              totalAmount = 0;
+              res.forEach((element) => {
+                const listElement = render(element);
+                container.append(listElement);
+                errorValue.style.display = 'none';
+                successValue.style.display = 'block';
+                successValue.innerText = 'Your expense has changed.';
+              });
+            }
+       }
     }
     checkBtn.addEventListener('click', update);
 }
