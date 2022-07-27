@@ -88,3 +88,47 @@ const deleteExpense = async (id) => {
   return errorValue.innerHTML = error;
  }
 };
+
+//POST METHOD
+
+const addExpense = async () => {
+    const shopValue = document.getElementById('shop-input').value;
+    const costValue = document.getElementById('amount-input').value;
+    const errorValue = document.getElementById('error-message');
+    const successValue = document.getElementById('success-message');
+  
+    try {
+      if(!shopValue || !costValue) {
+        errorValue.style.display = 'block';
+        return errorValue.innerText = 'Shop name or cost is not defined';
+      }
+      if(costValue < 0 || typeof costValue == 'number') {
+        errorValue.style.display = 'block';
+        return errorValue.innerHTML = 'Cost should be a positive number';
+      }
+const fetchResponse = await fetchBody('POST', {
+         shop: shopValue,
+          cost: costValue,
+      });
+  
+const res = await fetchResponse.json();
+      if (res.length) {
+        totalAmount = 0;
+        container.innerHTML = '';
+        res.forEach(element => {
+          const listElement = render(element);
+          container.append(listElement);
+        });
+  
+        errorValue.style.display = 'none';
+        successValue.style.display = 'block';
+        successValue.innerText = 'New instance has been added.';
+        document.getElementById('shop-input').value = null;
+        document.getElementById('amount-input').value = null;
+      }
+  } catch (error) { 
+      return errorValue.innerHTML = error;
+     }
+  }
+const addBtn = document.getElementById('add');
+addBtn.addEventListener('click', addExpense);
