@@ -1,6 +1,7 @@
 const api_base = 'http://localhost:3000';
 const container = document.querySelector('.expenses-container');
 let totalAmount = 0;
+const arr = [];
 
 
 const headers = {
@@ -32,6 +33,7 @@ const fetchAPI = async () => {
   res.forEach((element) => {
     const listEl = render(element);
     container.append(listEl);
+    arr.push(element);
   });
 }
 
@@ -107,8 +109,8 @@ const addExpense = async () => {
         return errorValue.innerHTML = 'Cost should be a positive number';
       }
 const fetchResponse = await fetchBody('POST', {
-         shop: shopValue,
-          cost: costValue,
+        shop: shopValue,
+        cost: costValue,
       });
   
 const res = await fetchResponse.json();
@@ -132,3 +134,77 @@ const res = await fetchResponse.json();
   }
 const addBtn = document.getElementById('add');
 addBtn.addEventListener('click', addExpense);
+
+// PATCH METHOD
+
+const updateInstanceById = async (updateValues) => {
+    console.log("updateValues", updateValues);
+    const { id, shop, cost, shopField, costField, editBtn } = updateValues
+    const errorValue = document.getElementById('error-message');
+    const successValue = document.getElementById('success-message');
+    const shopInput = document.createElement('input');
+    const costInput = document.createElement('input');
+    const checkBtn = document.createElement('img');
+    const valuesToUpdate = {};
+  
+    shopField.parentNode.replaceChild(shopInput, shopField);
+    costField.parentNode.replaceChild(costInput, costField);
+    editBtn.parentNode.replaceChild(checkBtn, editBtn)
+    checkBtn.src = 'https://img.icons8.com/emoji/48/000000/check-mark-button-emoji.png';
+    shopInput.value = shop;
+    costInput.value = cost;
+    shopInput.classList.add('edit-input-shop');
+    costInput.classList.add('edit-input-cost');
+    
+    let editedShopValue = shop;
+    let editedCostValue = cost;
+
+    shopInput.addEventListener('change', ({target}) => {
+      editedShopValue = target.value.trim();
+    });
+    costInput.addEventListener('change', ({target}) => {
+      editedCostValue = target.value;
+    });
+
+    const update = async () => {
+        if (!editedShopValue && !editedCostValue) {
+            errorValue.style.display = 'block';
+            return errorValue.innerHTML = 'You must change at least one input should be changed';
+          } 
+          if(editedCostValue < 0 || isNaN(editedCostValue)) {
+            errorValue.style.display = 'block';
+            return errorValue.innerHTML = 'Cost must be a positive number.';
+          }
+          if (editedShopValue !== shop) {
+            valuesToUpdate.shop = editedShopValue;
+          }
+          if (editedCostValue !== cost) {
+            valuesToUpdate.cost = editedCostValue;
+          }
+  
+        if (!Object.keys(valuesToUpdate).length) {
+            totalAmount = 0;
+            container.innerHTML = '';
+            arr.forEach(element => {
+                const listElement = render(element);
+                container.append(listElement);
+            });    
+        }
+       else {
+           container.innerHTML = '';    
+            const fetchedData = await fetchBody('PATCH', valuesToUpdate ,id);
+            const res = await fetchedData.json();
+            if (res.length) {
+              totalAmount = 0;
+              res.forEach((element) => {
+                const listElement = render(element);
+                container.append(listElement);
+                errorValue.style.display = 'none';
+                successValue.style.display = 'block';
+                successValue.innerText = 'Your expense has changed.';
+              });
+            }
+       }
+    }
+    checkBtn.addEventListener('click', update);
+}

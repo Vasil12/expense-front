@@ -123,3 +123,11 @@ p {
     display: none;
 }
 
+.buttons-container {
+    align-self: center;
+}
+
+img {
+    width: 30px;
+    height: 30px;
+}
