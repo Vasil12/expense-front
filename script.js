@@ -1,3 +1,4 @@
+/* eslint-disable no-use-before-define */
 const apiBase = 'http://localhost:3000';
 const container = document.querySelector('.expenses-container');
 let totalAmount = 0;
@@ -136,10 +137,10 @@ const deleteExpense = async (id) => {
 
 // PATCH METHOD
 
-const updateInstanceById = async (updateValues) => {
+const updateInstanceById = async (updateValue) => {
   const {
     id, shop, cost, shopField, costField, editBtn,
-  } = updateValues;
+  } = updateValue;
   const errorValue = document.getElementById('error-message');
   const successValue = document.getElementById('success-message');
   const shopInput = document.createElement('input');
@@ -159,11 +160,9 @@ const updateInstanceById = async (updateValues) => {
   let editedShopValue = shop;
   let editedCostValue = cost;
 
-  shopInput.addEventListener('change', ({ target }) => {
-    editedShopValue = target.value.trim();
-  });
-  costInput.addEventListener('change', ({ target }) => {
-    editedCostValue = target.value;
+  checkBtn.addEventListener('click', () => {
+    editedShopValue = shopInput.value.trim();
+    editedCostValue = costInput.value;
   });
 
   const update = async () => {
