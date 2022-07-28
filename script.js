@@ -1,6 +1,3 @@
-/* eslint-disable no-undef */
-/* eslint-disable no-shadow */
-/* eslint-disable no-use-before-define */
 const apiBase = 'http://localhost:3000';
 const container = document.querySelector('.expenses-container');
 let totalAmount = 0;
@@ -59,9 +56,7 @@ const render = (data) => {
   const editBtn = list.querySelector('.edit');
   editBtn.addEventListener('click', () => {
     const shopField = list.querySelector('.shop');
-    const shop = shopField.innerText.substr(6).slice(0, -1);
     const costField = list.querySelector('.amount');
-    const cost = costField.innerText.substring(2);
     updateValues = {
       id, shop, cost, shopField, costField, editBtn,
     };
@@ -78,13 +73,11 @@ window.onload = () => {
 };
 
 // POST METHOD
-
+const erorValue = document.getElementById('error-message');
 const addExpense = async () => {
   const shopValue = document.getElementById('shop-input').value;
   const costValue = document.getElementById('amount-input').value;
-  const erorValue = document.getElementById('error-message');
   const successValue = document.getElementById('success-message');
-
   try {
     if (!shopValue || !costValue) {
       erorValue.style.display = 'block';
